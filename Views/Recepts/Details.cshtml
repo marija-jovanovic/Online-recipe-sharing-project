@@ -1,0 +1,102 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@model Recepti.Models.Recept
+@using Recepti.Areas.Identity.Data
+
+@inject SignInManager<ReceptiUser> SignInManager
+@inject UserManager<ReceptiUser> UserManager
+@{
+    ViewData["Title"] = "Details";
+}
+
+<body style="background-image: url(https://img.freepik.com/free-photo/white-flower-with-cooking-ingredients-table_181624-1096.jpg?w=2000);  background-repeat: no-repeat">
+
+<h1>Details</h1>
+
+<div>
+    <h4>Recept</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Naslov)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Naslov)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Vreme)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Vreme)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Slika)
+        </dt>
+        <dd class = "col-sm-10">
+            <img src=@("~/images/" + Model.Slika)
+                 class="rounded-circle"
+                 height="100" width="100"
+                 asp-append-version="true" />
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Tekst)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Tekst)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Vegan)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Vegan)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Za_deca)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Za_deca)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Tip)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Tip)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Kreator)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Kreator)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Recenzii)
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.Recenzii != null)
+            {
+                @foreach (var review in Model.Recenzii)
+                {
+                    <br />
+                  <div>Komentar:</div>  @review.Komentar
+                    <br />
+                  <div>Ocena:</div> @review.Ocena
+                    <br />
+                    <div>Korisnik:</div> @review.Korisnik
+                    <br />
+                }
+            }
+        </dd>
+
+
+    </dl>
+</div>
+<div>
+    @if (User.Identity.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("User")))
+    {
+            @if (Model.Kreator == @UserManager.GetUserName(User)){
+        <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
+            }
+    }
+    <a asp-action="Index">Back to List</a>
+</div>
+</body>

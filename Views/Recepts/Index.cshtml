@@ -1,0 +1,210 @@
+﻿@model IEnumerable<Recepti.Models.Recept>
+@using Microsoft.AspNetCore.Identity
+@using Recepti.Areas.Identity.Data
+
+@inject SignInManager<ReceptiUser> SignInManager
+@inject UserManager<ReceptiUser> UserManager
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<body style="background-image: url(https://img.freepik.com/free-photo/white-flower-with-cooking-ingredients-table_181624-1096.jpg?w=2000)">
+
+<h1 style="font-family: cursive">Site Recepti</h1>
+
+@if (User.Identity.IsAuthenticated && !User.IsInRole("Admin"))
+{
+    <p>
+         <a asp-action="Create">Kreiraj nov</a>
+    </p>
+}
+
+@using (Html.BeginForm("Index", "Recepts", FormMethod.Post))
+{
+    <div><strong>Filtriraj po tip na jadenje:</strong></div>
+    <select name="searchTip" id="searchTip" onchange="this.form.submit()">
+        <option value=""></option>
+        @foreach (var iterator in ViewBag.Tipovi)
+        {
+            <option value="@iterator">@iterator</option>
+        }
+        <option value="All">All</option>
+    </select>
+}
+
+@using (Html.BeginForm("Index", "Recepts", FormMethod.Post))
+{
+    <div><strong>Filtriraj po povolnost za vegani:</strong></div>
+    <select name="searchVegan" id="searchVegan" onchange="this.form.submit()">
+        <option value=""></option>
+        @foreach (var iterator in ViewBag.Vegan)
+        {
+            <option value="@iterator">@iterator</option>
+        }
+        <option value="All">All</option>
+    </select>
+}
+
+@using (Html.BeginForm("Index", "Recepts", FormMethod.Post))
+{
+    <div><strong>Filtriraj po povolnost za deca:</strong></div>
+    <select name="searchDeca" id="searchDeca" onchange="this.form.submit()">
+        <option value=""></option>
+        @foreach (var iterator in ViewBag.Deca)
+        {
+            <option value="@iterator">@iterator</option>
+        }
+        <option value="All">All</option>
+    </select>
+}
+
+@using (Html.BeginForm("Index", "Recepts", FormMethod.Post))
+{
+    <div><strong>Filtriraj po kreatori:</strong></div>
+    <select name="searchOwn" id="searchOwn" onchange="this.form.submit()">
+        <option value=""></option>
+        @foreach (var iterator in ViewBag.Kreatori)
+        {
+            <option value="@iterator">@iterator</option>
+        }
+        <option value="All">All</option>
+    </select>
+}
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Naslov)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Vreme)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Slika)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tekst)
+            </th>
+            <th>
+                Za vegani
+            </th>
+            <th>
+                Za deca
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tip)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Kreator)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Prosek)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+        <tbody>
+@foreach (var item in Model) {
+            @if (item.Kreator == @UserManager.GetUserName(User))
+            {
+                <tr style="background-color: lightgoldenrodyellow">
+           
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Naslov)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Vreme)
+                    </td>
+                    <td>
+                        <img src="~/images/@item.Slika"
+        class="rounded-circle"
+        height="100" width="100"
+                         asp-append-version="true" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Tekst)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Vegan)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Za_deca)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Tip)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Kreator)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Prosek)
+                    </td>
+                    <td>
+
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                        @if (item.Kreator == @UserManager.GetUserName(User) || User.IsInRole("Admin"))
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>  
+                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        }
+                </td>
+        </tr>
+        }
+
+
+            else
+            {
+                <tr style="background-color: navajowhite">
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Naslov)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Vreme)
+                    </td>
+                    <td>
+                        <img src="~/images/@item.Slika"
+                             class="rounded-circle"
+                             height="100" width="100"
+                     asp-append-version="true" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Tekst)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Vegan)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Za_deca)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Tip)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Kreator)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Prosek)
+                    </td>
+                    <td>
+
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                        @if (item.Kreator == @UserManager.GetUserName(User) || User.IsInRole("Admin"))
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        }
+                    </td>
+                    
+                </tr>
+                
+            }
+
+
+
+}
+    </tbody>
+</table>
+</body>

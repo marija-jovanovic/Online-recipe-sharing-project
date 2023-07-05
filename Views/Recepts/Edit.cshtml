@@ -1,0 +1,85 @@
+﻿@model Recepti.ViewModels.ReceptEditViewModel
+@using Microsoft.AspNetCore.Identity
+@using Recepti.Areas.Identity.Data
+
+@inject SignInManager<ReceptiUser> SignInManager
+@inject UserManager<ReceptiUser> UserManager
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<body style="background-image: url(https://img.freepik.com/free-photo/white-flower-with-cooking-ingredients-table_181624-1096.jpg?w=2000);  background-repeat: no-repeat">
+
+<h1>Edit</h1>
+
+<h4>Recept</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+            
+                <form enctype="multipart/form-data" asp-controller="Recepts" asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Recept.Id" />
+            <div class="form-group">
+                <label asp-for="Recept.Naslov" class="control-label"></label>
+                <input asp-for="Recept.Naslov" class="form-control" />
+                <span asp-validation-for="Recept.Naslov" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Recept.Vreme" class="control-label"></label>
+                <input asp-for="Recept.Vreme" class="form-control" />
+                <span asp-validation-for="Recept.Vreme" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="slika" class="control-label"></label>
+                <div class="custom-file">
+                    <input asp-for="slika" class="custom-file-input" id="customFile">
+                    <label class="custom-file-label" for="customFile">Odberi slika</label>
+                </div>
+                <span asp-validation-for="slika" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Recept.Tekst" class="control-label"></label>
+                <input asp-for="Recept.Tekst" class="form-control" />
+                <span asp-validation-for="Recept.Tekst" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Recept.Vegan" class="control-label"></label>
+                <input asp-for="Recept.Vegan" class="form-control" />
+                <span asp-validation-for="Recept.Vegan" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Recept.Za_deca" class="control-label"></label>
+                <input asp-for="Recept.Za_deca" class="form-control" />
+                <span asp-validation-for="Recept.Za_deca" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Recept.Tip" class="control-label"></label>
+                <input asp-for="Recept.Tip" class="form-control" />
+                <span asp-validation-for="Recept.Tip" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Recept.Kreator" class="control-label"></label>
+                <input asp-for="Recept.Kreator" class="form-control" />
+                <span asp-validation-for="Recept.Kreator" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                   
+                        <input type="submit" value="Save" class="btn btn-primary" />
+                    
+                </div>
+        </form> 
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+</body>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

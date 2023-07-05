@@ -1,0 +1,80 @@
+﻿
+@model IEnumerable<Recepti.Models.Recenzija>
+@using Microsoft.AspNetCore.Identity
+@using Recepti.Areas.Identity.Data
+
+@inject SignInManager<ReceptiUser> SignInManager
+@inject UserManager<ReceptiUser> UserManager
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1 style="font-family: cursive">Moi recenzii</h1>
+
+@if (TempData["message"] != null)
+{
+    <script>alert('@TempData["message"]');</script>
+}
+
+@if (TempData["poraka"] != null)
+{
+    <script>alert('@TempData["poraka"]');</script>
+}
+
+<body style="background-image: url(https://images4.alphacoders.com/127/1275718.jpg);  background-repeat: no-repeat">
+
+<p>
+
+
+        <a asp-action="Create">Kreiraj nov</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Korisnik)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Komentar)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ocena)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Recept)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+            @if (item.Korisnik == @UserManager.GetUserName(User))
+            {
+                <tr>
+                    <td>
+                        @UserManager.GetUserName(User)
+                    </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Komentar)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ocena)
+            </td>
+            <td>
+                        @if (item.Recept.Kreator != @UserManager.GetUserName(User)){
+                @Html.DisplayFor(modelItem => item.Recept.Naslov)
+                        }
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> 
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> 
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+        }
+}
+    </tbody>
+</table>
+</body>
